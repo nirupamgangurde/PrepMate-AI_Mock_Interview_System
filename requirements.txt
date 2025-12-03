@@ -1,0 +1,10 @@
+streamlit
+google-generativeai
+Pillow
+python-dotenv
+streamlit-webrtc
+aiortc
+opencv-python-headless
+av
+pypdf
+python-docx
