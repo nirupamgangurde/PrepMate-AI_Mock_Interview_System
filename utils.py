@@ -2,12 +2,8 @@ import streamlit as st
 import tempfile
 import os
 
-# Try importing WebRTC and MediaRecorder for the recorder factory
-try:
-    from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
-    from aiortc.contrib.media import MediaRecorder
-except ImportError:
-    pass 
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
+from aiortc.contrib.media import MediaRecorder
 
 def save_uploaded_file(uploaded_file):
     """Saves uploaded file to temp and returns path."""

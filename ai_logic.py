@@ -15,7 +15,7 @@ def get_gemini_response(model, history, user_input=None, image_path=None, audio_
     """Orchestrates multimodal input to Gemini."""
     prompt_parts = []
     
-    # 1. ALWAYS retrieve the Persistent System Prompt (Context/Persona)
+    # 1. retrieve the  System Prompt (Context/Persona)
     system_prompt_content = ""
     if history and history[0]['role'] == 'system':
         system_prompt_content = history[0]['content']
