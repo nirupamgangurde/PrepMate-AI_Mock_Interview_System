@@ -6,7 +6,7 @@ import PIL.Image
 def configure_gemini(api_key):
     try:
         genai.configure(api_key=api_key)
-        return genai.GenerativeModel('gemini-2.5-flash')
+        return genai.GenerativeModel('gemini-2.5-flash-lite')
     except Exception as e:
         st.error(f"Error configuring API: {e}")
         return None
