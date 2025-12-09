@@ -5,13 +5,7 @@ from dotenv import load_dotenv
 # Import functions from our new modules
 from utils import save_uploaded_file, read_file_content, recorder_factory
 from ai_logic import configure_gemini, get_gemini_response, generate_final_feedback
-
-# Try importing WebRTC imports locally for the UI components
-try:
-    from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
-except ImportError:
-    st.error("⚠️ Library missing! Please run: pip install streamlit-webrtc aiortc")
-    st.stop()
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
 # Load environment variables
 load_dotenv()
@@ -51,7 +45,7 @@ if st.session_state.step == "setup":
             with c3:
                 experience = st.selectbox("Experience Level", ["Intern", "Junior", "Mid-Level", "Senior", "Executive"])
             
-            # Row 2: Rubric (2 cols) and Uploader (1 col - directly under Experience)
+
             c4, c5, c6 = st.columns(3)
             with c4:
                 rubric = st.selectbox("Evaluation Rubric", 
@@ -105,7 +99,24 @@ if st.session_state.step == "setup":
                     
                     # Customize System Prompt
                     if q_bank_text:
-                        sys_prompt = f"You are PrepMate, an AI Interviewer. You have a SPECIFIC list of questions to ask. Do not deviate. Start by welcoming {name} and asking the FIRST question from the list."
+                        sys_prompt = f"""
+                        You are PrepMate, an expert AI Interviewer.
+                        CONTEXT:
+                        You have been provided with a specific Question Bank below. 
+                        Candidate Name: {name}
+                        Role: {role}
+
+                        INSTRUCTIONS:
+                        1. Start by welcoming the candidate briefly.
+                        2. IMMEDIATELY ask the FIRST question from the Question Bank below.
+                        3. Wait for the user's answer.
+                        4. CRITICAL: Do NOT evaluate, correct, or give feedback on the answer. Even if the answer is completely wrong, simply accept it and move to the next question.
+                        5. Ask questions ONE BY ONE. Do not group them.
+                        6. When the list is finished, say "Thank you, the interview is complete."
+
+                        QUESTION BANK:
+                        {q_bank_text}
+                        """
                     else:
                         sys_prompt = f"You are PrepMate, an AI Interviewer. Interviewing for {role}. Skills: {skills}. Rubric: {rubric}. Act human. Start with a greeting."
                     
@@ -119,7 +130,6 @@ elif st.session_state.step == "interview":
     user_info = st.session_state.user_info
     
     # Top Action Bar
-    # Buttons are removed from Sidebar and placed here
     col_h1, col_h2 = st.columns([6, 1])
     with col_h1:
         st.subheader(f"💬 Interviewing: :blue[{user_info['name']}]")
